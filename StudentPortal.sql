@@ -80,4 +80,21 @@ FROM Marks m
 JOIN Students s ON m.student_id = s.student_id
 GROUP BY s.student_id;
 
+CREATE VIEW LowAttendanceStudents AS
+SELECT s.name, c.course_name, a.attendance_percentage
+FROM Attendance a
+JOIN Students s ON a.student_id = s.student_id
+JOIN Courses c ON a.course_id = c.course_id
+WHERE a.attendance_percentage < 75;
+
+DELIMITER //
+CREATE PROCEDURE GetStudentAverageMarks()
+BEGIN
+    SELECT s.name, AVG(m.marks_obtained) AS avg_marks
+    FROM Marks m
+    JOIN Students s ON m.student_id = s.student_id
+    GROUP BY s.student_id;
+END //
+DELIMITER ;
+
 
